@@ -13,13 +13,17 @@
     "react-scripts": "5.0.1",
     "react-top-loading-bar": "^2.3.1",
     "styled-components": "^6.1.8",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "homepage": "https://ketansharma1411.github.io/"
+
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [
@@ -38,5 +42,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "gh-pages": "^6.2.0"
   }
 }
