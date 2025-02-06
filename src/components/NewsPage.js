@@ -1,108 +1,106 @@
-import React from "react";
-import NewsItem from "./NewsItem";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { useEffect, useState } from "react";
+import NewsItem from "./NewsItem";
 import Spinner from "./Spinner";
-// import InfiniteScroll from "react-infinite-scroll-component";
 
 export default function NewsPage(props) {
-    let [pageCount, setpageCount] = useState(1);
-    let[loading,setLoading]=useState(true)
-    // console.log(props)
-    let [dataNew, setData] = useState({articles:[]});
+    const [loading, setLoading] = useState(true);
+    const [dataNew, setData] = useState({ results: [] });
+    const [nextPage, setNextPage] = useState(""); // Store the nextPage token
 
-    useEffect(() => {
-        const fetchData = async () => {
-            props.changeref.current.continuousStart();
-            let newsUrl = `https://newsapi.org/v2/top-headlines?country=in&category=${props.data.category}&apiKey=abb603c6d89343069b122ea44c6b49be&page=${pageCount}&pagesize=10`;
-            const response = await fetch(newsUrl);
-            const jsonData = await response.json();
-            setData(jsonData);
-            setLoading(false)   
-            props.changeref.current.complete(); 
-            document.title=`${props.data.category.toUpperCase()}-NewsTera`
-        };
-
-        fetchData();
-    }, [pageCount,props.data.category,props.changeProgress,props]);
     
+    const fetchData = async (pageToken = "") => {
+        props.changeref.current.continuousStart();
+        
+        let newsUrl = `https://newsdata.io/api/1/latest?apikey=pub_6761600a44f053bff15e4e8b3e30e278ae384&country=in&language=en&category=${props.data.category}`;
+        
+        if (pageToken) {
+            newsUrl += `&page=${pageToken}`; // Append nextPage token if available
+        }
+    
+        console.log("Fetching:", newsUrl);
+        const response = await fetch(newsUrl);
+        const jsonData = await response.json();
+        
+        if (jsonData.status === "success") {
+            // ✅ Filter out articles that don't have a description
+            const filteredResults = jsonData.results.filter(article => article.description && article.description.trim() !== "");
+    
+            setData((prevData) => ({
+                ...jsonData, 
+                results: [...prevData.results, ...filteredResults], // Append only filtered news
+            }));
+            setNextPage(jsonData.nextPage || ""); // Store nextPage token
+        } else {
+            console.error("API Error:", jsonData);
+        }
+    
+        setLoading(false);
+        props.changeref.current.complete();
+        document.title = `${props.data.category.toUpperCase()} - NewsTera`;
+    };
+    
+    useEffect(() => {
+        fetchData(); // Initial fetch
+    }, [props.data.category, props.changeProgress, props]);
 
     return (
         <Main>
-            <center><h2  style={{marginTop:'64px'}} >News.com-Top Headlines from {props.data.category.slice(0,1).toUpperCase()+props.data.category.slice(1).toLowerCase()}</h2></center>
-           {loading && <center><Spinner/></center>} 
+            <center>
+                <h2 style={{ marginTop: '64px' }}>
+                    News.com - Top Headlines from {props.data.category.charAt(0).toUpperCase() + props.data.category.slice(1).toLowerCase()}
+                </h2>
+            </center>
+            
+            {loading && <center><Spinner /></center>}
             
             <div className="container">
-                {dataNew.articles.map((element) => {
-                    
-                    console.log(element);
-                    return (
-                      
-                        
-                        <NewsItem
-                            key={element.url}
-                            data={{
-                                heading: element.title,
-                                imgUrl: element.urlToImage,
-                                describe: element.description,
-                                url: element.url,
-                            }}
-                            mode={props.mode}
-                            toogle={props.toogle}
-                            author={element.author}
-                            publish={element.publishedAt}
-                            source={element.source.name}
-                            category={props.data.category}
-
-                        />
-                          
-                    );
-                })}
+                {dataNew.results.map((element, index) => (
+                    <NewsItem
+                        key={element.link || index} // Use index as a fallback key
+                        data={{
+                            heading: element.title,
+                            imgUrl: element.image_url,
+                            describe: element.description,
+                            url: element.link,
+                        }}
+                        mode={props.mode}
+                        toogle={props.toogle}
+                        author={element.source_id}
+                        publish={element.pubDate}
+                        source={element.source_name}
+                        category={props.data.category}
+                    />
+                ))}
             </div>
+
+            {/* Pagination Buttons */}
             <div className="arr-btn">
                 <button
                     className="btn1 btn-primary"
-                    disabled={pageCount<=1}
-                    onClick={() => {
-                        setpageCount(pageCount > 1 ? pageCount-- : (pageCount = 1));
-                    }}
+                    disabled={!nextPage} // Disable if no nextPage available
+                    onClick={() => fetchData(nextPage)} // ✅ Now fetchData is accessible!
                 >
-                    <i className="fa-solid fa-arrow-left"></i>
+                    Load More
                 </button>
-                <button
-                    disabled={pageCount>dataNew.totalResults/10}
-                    className="btn2 btn-primary"
-                    
-                    onClick={() => {
-                        if(pageCount<=dataNew.totalResults/10){setpageCount(pageCount++);}
-                        else{
-                            setpageCount(pageCount+=0)
-                        
-                        }
-                        
-                    }}
-                >
-                    <i className="fa-solid fa-arrow-right"></i>
-                </button>
-            </div>
-            <div className="result">
-                <center><h5>{pageCount}</h5></center>
             </div>
         </Main>
     );
 }
+
 const Main = styled.div`
   .container {
     display: flex;
     flex-direction: row;
-    /* justify-content: center;
-    align-items: center; */
     flex-wrap: wrap;
     width: auto;
     height: auto;
     margin-top: 2rem;
     margin-left: 3rem;
     gap: 1rem;
+    justify-content: center;
+    align-items: center;
+
   }
   .arr-btn {
     width: 100%;
@@ -110,22 +108,21 @@ const Main = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 15px;
     margin-bottom: -40px;
   }
   .arr-btn button {
     border: none;
     border-radius: 3px;
     text-align: center;
-    width: 60px;
+    width: 120px;
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
   }
-  .result{
-    color: red;
-    margin-left: 30.5rem;
-    width: 100%;
-    display: inline;
-    justify-content: center;
-    align-items: center;
-    
+  .arr-btn button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
   }
 `;
+

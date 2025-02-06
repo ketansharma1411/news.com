@@ -34,8 +34,8 @@ function App() {
             path="/"
             element={
               <NewsPage 
-                key="general" changeref={loadingBarRef}
-                data={{ category: "general" }}
+                key="top" changeref={loadingBarRef}
+                data={{ category: "top" }}
                 mode={mode}
                 toogle={toogle}
               />

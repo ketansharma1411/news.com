@@ -25,7 +25,7 @@ export default function Navbar(props) {
                                     <Link className={`nav-link ${location.pathname==='/entertainment'?'active':''}`} to="/entertainment">Entertainment</Link>
                                 </li>
                                 <li className="nav-item">
-                                    <Link className={`nav-link ${location.pathname==='/'?'active':''}`} to="/">General</Link>
+                                    <Link className={`nav-link ${location.pathname==='/'?'active':''}`} to="/">Top</Link>
                                 </li>
                                 <li className="nav-item">
                                     <Link className={`nav-link ${location.pathname==='/health'?'active':''}`} to="/health">Health</Link>
