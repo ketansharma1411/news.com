@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loading Skeleton</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <style>
+        .skeleton {
+            opacity: 0.5; /* Slightly faded */
+            animation: pulse 1.5s infinite ease-in-out; /* Subtle pulsing animation */
+            background-color: #eee; /* Light gray background */
+        }
+
+        .skeleton-image {
+            height: 200px; /* Adjust as needed */
+            width: 100%;
+            background-color: #ddd; /* Slightly darker gray for image area */
+        }
+        .skeleton-title {
+            height: 1.5rem;
+            width: 80%; /* Adjust as needed */
+            margin-bottom: 0.5rem;
+        }
+
+        .skeleton-text {
+            height: 1rem;
+            width: 90%; /* Adjust as needed */
+            margin-bottom: 0.5rem;
+
+        }
+        .skeleton-small-text{
+            height: 0.8rem;
+            width: 60%;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 0.5; }
+            50% { opacity: 1; }
+            100% { opacity: 0.5; }
+        }
+        .card-group {
+            display: flex; /* Ensure card group uses flexbox */
+            flex-wrap: wrap; /* Allow wrapping on smaller screens */
+        }
+
+        .card {
+            flex: 1 0 0; /* Distribute space evenly among cards */
+            margin: 10px; /* Add some margin between cards */
+        }
+    </style>
+</head>
+<body>
+    <div class="skeleton-container">
+        <div class="card text-center">
+            <div class="card-header">
+            <ul class="nav nav-pills card-header-pills">
+                <li class="nav-item skeleton">
+                <a class="nav-link skeleton-text active" href="#"> </a>
+                </li>
+                <li class="nav-item skeleton">
+                <a class="nav-link skeleton-text" href="#"> </a>
+                </li>
+                <li class="nav-item skeleton">
+                <a class="nav-link skeleton-text disabled" aria-disabled="true"> </a>
+                </li>
+            </ul>
+            </div>
+            <div class="card-body">
+            <h5 class="card-title skeleton-title"></h5>
+            <p class="card-text skeleton-text"></p>
+            <a href="#" class="btn btn-primary skeleton skeleton-text"> </a>
+            </div>
+        </div>
+    </div>
+      
+      <style>
+      .skeleton {
+        background-color: #eee;
+        animation: shimmer 1s infinite linear;
+      }
+      
+      .skeleton-text {
+        width: 100%;
+        height: 1em;
+      }
+      
+      .skeleton-title {
+        height: 1.5em;
+      }
+      
+      .skeleton-image {
+        width: 100%;
+        height: 100px;
+      }
+      
+      
+      @keyframes shimmer {
+        0% {
+          background-position: -100%;
+        }
+        100% {
+          background-position: 100%;
+        }
+      }
+      
+      .skeleton::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(to right, #eee 0%, #ddd 20%, #eee 40%, #ddd 60%, #eee 80%, #ddd 100%);
+        background-size: 200% 100%;
+        animation: shimmer 1.5s infinite linear;
+        z-index: -1; /* Ensure it's behind the content */
+      }
+      </style>
+
+    <div class="card-group" id="content-container" style="display: none;">
+        <div class="card">
+            <img src="https://via.placeholder.com/300x200" class="card-img-top" alt="...">
+            <div class="card-body">
+                <h5 class="card-title">Card title</h5>
+                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                <p class="card-text"><small class="text-body-secondary">Last updated 3 mins ago</small></p>
+            </div>
+        </div>
+        <div class="card">
+            <img src="https://via.placeholder.com/300x200" class="card-img-top" alt="...">
+            <div class="card-body">
+                <h5 class="card-title">Card title</h5>
+                <p class="card-text">This card has supporting text below as a natural lead-in to additional content.</p>
+                <p class="card-text"><small class="text-body-secondary">Last updated 3 mins ago</small></p>
+            </div>
+        </div>
+        <div class="card">
+            <img src="https://via.placeholder.com/300x200" class="card-img-top" alt="...">
+            <div class="card-body">
+                <h5 class="card-title">Card title</h5>
+                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This card has even longer content than the first to show that equal height action.</p>
+                <p class="card-text"><small class="text-body-secondary">Last updated 3 mins ago</small></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        setTimeout(function() {
+            document.getElementById('skeleton-container').style.display = 'none';
+            document.getElementById('content-container').style.display = 'flex'; // Show content
+        }, 5000); // 5-second delay
+    });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+</body>
+</html>
