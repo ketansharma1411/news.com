@@ -1,5 +1,5 @@
 import React from 'react'
-
+import { Moon, SunMedium } from 'lucide-react';
 import styled from 'styled-components'
 import{Link,useLocation} from 'react-router-dom'
 export default function Navbar(props) {
@@ -41,9 +41,39 @@ export default function Navbar(props) {
                                 </li>
                             </ul>
 
-                            <div className='moon' onClick={props.toogle} style={{border:props.mode==='dark'?'1px solid white':'1px solid #212529'}}>
+                            {/* <div className='moon' onClick={props.toogle} style={{border:props.mode==='dark'?'1px solid white':'1px solid #212529'}}>
                                 <i className="fa-solid fa-moon" style={{transform:props.mode==='light'?'rotate(0deg)':'rotate(360deg)'}}></i>
-                            </div>
+                            </div> */}
+                            
+                           <div
+                                className="moon"
+                                onClick={props.toogle}
+                                style={{
+                                    border: props.mode === 'dark' ? '1px solid white' : '1px solid #212529',
+                                    cursor: 'pointer',
+                                    padding: '8px',
+                                    borderRadius: '50%',
+                                    transition: 'all 0.3s ease',
+                                    display: 'inline-flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center'
+                                }}
+                                >
+                                {props.mode === 'dark' ? (
+                                    <SunMedium size={18} color="#ffc107" style={{ transition: 'transform 0.3s ease', transform: 'rotate(360deg)' }} />
+                                ) : (
+                                    <i
+                                    className="fa-solid fa-moon"
+                                    style={{
+                                        transform: 'rotate(0deg)',
+                                        transition: 'transform 0.3s ease',
+                                        color: '#212529',
+                                        fontSize: '1rem'
+                                    }}
+                                    ></i>
+                                )}
+                                </div>
+                            
 
                         </div>
                     </div>
